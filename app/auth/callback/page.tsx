@@ -1,20 +1,21 @@
 "use client"
 
 import { useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { createSupabaseClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 
 export default function AuthCallbackPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const supabase = createSupabaseClient()
 
   useEffect(() => {
     const handleCallback = async () => {
-      const code = searchParams.get("code")
-      const error = searchParams.get("error")
-      const errorDescription = searchParams.get("error_description")
+      // Get URL parameters from window.location instead of useSearchParams
+      const urlParams = new URLSearchParams(window.location.search)
+      const code = urlParams.get("code")
+      const error = urlParams.get("error")
+      const errorDescription = urlParams.get("error_description")
 
       if (error) {
         toast.error(`Authentication failed: ${errorDescription || error}`)
@@ -42,7 +43,7 @@ export default function AuthCallbackPage() {
     }
 
     handleCallback()
-  }, [searchParams, router, supabase])
+  }, [router, supabase])
 
   return (
     <div className="container mx-auto max-w-md py-12 text-center">
