@@ -16,11 +16,11 @@ export default function AuthCallbackPage() {
       const error = searchParams.get("error")
       const errorDescription = searchParams.get("error_description")
 
-              if (error) {
-          toast.error(`Authentication failed: ${errorDescription || error}`)
-          router.push("/login")
-          return
-        }
+      if (error) {
+        toast.error(`Authentication failed: ${errorDescription || error}`)
+        router.push("/login")
+        return
+      }
 
       if (code) {
         try {
