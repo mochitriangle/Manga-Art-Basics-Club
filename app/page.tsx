@@ -54,32 +54,34 @@ export default async function HomePage() {
 
         {/* Right Side - Upcoming Poster */}
         <div className="lg:col-span-1">
-          <Card className="aspect-video">
+          <Card className="aspect-video h-full">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">Upcoming Posters</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 flex-1">
               {posters && posters.length > 0 ? (
                 <div className="space-y-4">
                   {posters.map((poster) => (
                     <div key={poster.id} className="text-center space-y-2">
-                      <img 
-                        src={poster.image_url} 
-                        alt={poster.title}
-                        className="w-full rounded-lg shadow-sm"
-                      />
-                      <div>
+                      <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted">
+                        <img 
+                          src={poster.image_url} 
+                          alt={poster.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="px-2">
                         <h4 className="font-semibold text-sm">{poster.title}</h4>
                         {poster.description && (
-                          <p className="text-xs text-muted-foreground">{poster.description}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{poster.description}</p>
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center text-muted-foreground">
-                  <div className="w-16 h-16 mx-auto bg-muted rounded-lg flex items-center justify-center mb-2">
+                <div className="text-center text-muted-foreground flex flex-col items-center justify-center h-full min-h-[200px]">
+                  <div className="w-16 h-16 mx-auto bg-muted rounded-lg flex items-center justify-center mb-3">
                     <div className="w-8 h-8 bg-muted-foreground/20 rounded"></div>
                   </div>
                   <p className="text-sm">No posters available</p>
@@ -88,7 +90,9 @@ export default async function HomePage() {
               
               {/* Show upload button for admins/staff */}
               {(userRole === 'admin' || userRole === 'staff') && (
-                <PosterUpload />
+                <div className="mt-4">
+                  <PosterUpload />
+                </div>
               )}
             </CardContent>
           </Card>
