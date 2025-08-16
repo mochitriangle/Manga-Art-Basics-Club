@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { PosterUpload } from '@/components/poster-upload'
 
 export default async function HomePage() {
-  const supabase = createSupabaseServer()
+  const supabase = await createSupabaseServer()
   const { data: { user } } = await supabase.auth.getUser()
   
   // Get user profile to check role
