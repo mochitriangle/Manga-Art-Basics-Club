@@ -14,23 +14,9 @@ export function AuthForm() {
   const [password, setPassword] = useState("")
   const [fullName, setFullName] = useState("")
 
-  // Debug environment variables
-  console.log('Environment check:')
-  console.log('SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-  console.log('SUPABASE_KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-  console.log('SITE_URL:', process.env.NEXT_PUBLIC_SITE_URL)
+  const supabase = createSupabaseClient()
 
-  let supabase
-  try {
-    supabase = createSupabaseClient()
-    console.log('Supabase client created successfully')
-  } catch (error) {
-    console.error('Failed to create Supabase client:', error)
-    toast.error('Failed to initialize authentication')
-    return
-  }
-
-  // ... rest of your component code
+  // ... rest of your component
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
