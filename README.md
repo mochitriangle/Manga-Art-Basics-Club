@@ -172,3 +172,4 @@ manga-art-club/
 ## 许可证
 
 MIT License
+# Force deployment
