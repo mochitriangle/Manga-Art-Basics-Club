@@ -30,7 +30,9 @@ export default function AuthCallbackPage() {
       if (code) {
         console.log('Processing auth code...')
         try {
-          const { error } = await supabase.auth.exchangeCodeForSession(code)
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+          console.log('Exchange result:', { data, error })
+          
           if (error) {
             console.error('Session exchange error:', error)
             toast.error("Authentication failed, please try again")
@@ -38,7 +40,8 @@ export default function AuthCallbackPage() {
           } else {
             console.log('Authentication successful!')
             toast.success("Authentication successful!")
-            router.push("/profile")
+            // Force a page refresh to ensure session is loaded
+            window.location.href = "/profile"
           }
         } catch (err) {
           console.error('Session exchange exception:', err)
