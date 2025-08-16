@@ -11,33 +11,42 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     const handleCallback = async () => {
-      // Get URL parameters from window.location instead of useSearchParams
+      console.log('Auth callback started')
+      
       const urlParams = new URLSearchParams(window.location.search)
       const code = urlParams.get("code")
       const error = urlParams.get("error")
       const errorDescription = urlParams.get("error_description")
 
+      console.log('URL params:', { code: !!code, error, errorDescription })
+
       if (error) {
+        console.error('Auth error:', error, errorDescription)
         toast.error(`Authentication failed: ${errorDescription || error}`)
         router.push("/login")
         return
       }
 
       if (code) {
+        console.log('Processing auth code...')
         try {
           const { error } = await supabase.auth.exchangeCodeForSession(code)
           if (error) {
+            console.error('Session exchange error:', error)
             toast.error("Authentication failed, please try again")
             router.push("/login")
           } else {
+            console.log('Authentication successful!')
             toast.success("Authentication successful!")
             router.push("/profile")
           }
         } catch (err) {
+          console.error('Session exchange exception:', err)
           toast.error("Authentication failed, please try again")
           router.push("/login")
         }
       } else {
+        console.log('No auth code found, redirecting to login')
         router.push("/login")
       }
     }

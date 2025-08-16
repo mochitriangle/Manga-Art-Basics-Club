@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createSupabaseClient } from "@/lib/supabase/client"
-import { AuthError } from "@/lib/types"
 import { toast } from "sonner"
 
 export function AuthForm() {
@@ -15,7 +14,23 @@ export function AuthForm() {
   const [password, setPassword] = useState("")
   const [fullName, setFullName] = useState("")
 
-  const supabase = createSupabaseClient()
+  // Debug environment variables
+  console.log('Environment check:')
+  console.log('SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+  console.log('SUPABASE_KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  console.log('SITE_URL:', process.env.NEXT_PUBLIC_SITE_URL)
+
+  let supabase
+  try {
+    supabase = createSupabaseClient()
+    console.log('Supabase client created successfully')
+  } catch (error) {
+    console.error('Failed to create Supabase client:', error)
+    toast.error('Failed to initialize authentication')
+    return
+  }
+
+  // ... rest of your component code
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()

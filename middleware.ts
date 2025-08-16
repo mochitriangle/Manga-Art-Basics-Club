@@ -6,9 +6,10 @@ export async function middleware(request: NextRequest) {
     request,
   })
 
+  // Use server-side environment variables (without NEXT_PUBLIC_ prefix)
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
@@ -26,6 +27,8 @@ export async function middleware(request: NextRequest) {
       },
     }
   )
+
+  // ... rest of your middleware code stays the same
 
   // Refresh session if expired - required for Server Components
   const { data: { user } } = await supabase.auth.getUser()
