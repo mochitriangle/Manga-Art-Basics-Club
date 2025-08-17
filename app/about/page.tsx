@@ -79,33 +79,27 @@ export default function AboutPage() {
 
     setAssigning(true)
     try {
-      // Find user by email
-      const { data: user, error: userError } = await supabase.auth.admin.listUsers()
-      if (userError) throw userError
+      // Call the server-side API route for teacher assignment
+      const response = await fetch('/api/assign-teacher', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.trim() }),
+      })
 
-      const targetUser = user.users.find(u => u.email === email.trim())
-      if (!targetUser) {
-        toast.error('User not found with this email')
-        return
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to assign teacher')
       }
 
-      // Update their profile to be a teacher
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ 
-          is_teacher: true,
-          role: 'staff' // Set as staff role
-        })
-        .eq('id', targetUser.id)
-
-      if (updateError) throw updateError
-
-      toast.success(`${email} is now a teacher!`)
+      toast.success(result.message || 'Teacher assigned successfully!')
       setNewTeacherEmail('')
       fetchProfiles() // Refresh the list
     } catch (error) {
       console.error('Error assigning teacher:', error)
-      toast.error('Failed to assign teacher role')
+      toast.error(error instanceof Error ? error.message : 'Failed to assign teacher role')
     } finally {
       setAssigning(false)
     }
