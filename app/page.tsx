@@ -41,13 +41,13 @@ export default async function HomePage() {
           {/* Left Side - Action Buttons */}
           <div className="lg:col-span-2">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <Button asChild size="lg" className="h-20 text-lg font-semibold bg-gray-900 hover:bg-gray-800 text-white border-0 shadow-lg">
+              <Button asChild size="lg" className="h-20 text-lg font-semibold">
                 <Link href="/tutorials">Tutorials</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-50 shadow-lg">
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
                 <Link href="/competitions">Competitions</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-50 shadow-lg">
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
                 <Link href="/homework">Hand In Homework</Link>
               </Button>
             </div>
