@@ -36,10 +36,10 @@ export default async function HomePage() {
       </div>
 
       {/* Main Content */}
-      <div className="grid lg:grid-cols-3 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         {/* Left Side - Action Buttons */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Button asChild size="lg" className="h-16 text-base font-medium">
               <Link href="/tutorials">Tutorials</Link>
             </Button>
@@ -53,8 +53,8 @@ export default async function HomePage() {
         </div>
 
         {/* Right Side - Upcoming Poster */}
-        <div className="lg:col-span-1 lg:sticky lg:top-8">
-          <Card className="aspect-video h-full shadow-sm border-2">
+        <div className="lg:col-span-1 w-full">
+          <Card className="aspect-video h-full shadow-sm border-2 max-w-sm mx-auto lg:mx-0">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg font-semibold">Upcoming Posters</CardTitle>
             </CardHeader>
