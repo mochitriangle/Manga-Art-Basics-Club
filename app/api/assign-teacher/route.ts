@@ -1,9 +1,11 @@
 import { createSupabaseServer } from '@/lib/supabase/server'
+import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createSupabaseServer()
+    const supabaseAdmin = createSupabaseAdmin()
     
     // Check if the current user is an admin
     const { data: { user } } = await supabase.auth.getUser()
@@ -28,9 +30,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 })
     }
 
-    // Use admin function to find the user (this works on the server side)
-    const { data: users, error: userError } = await supabase.auth.admin.listUsers()
+    // Use admin client to find the user (this works with service role key)
+    const { data: users, error: userError } = await supabaseAdmin.auth.admin.listUsers()
     if (userError) {
+      console.error('Admin listUsers error:', userError)
       return NextResponse.json({ error: 'Failed to list users' }, { status: 500 })
     }
 
