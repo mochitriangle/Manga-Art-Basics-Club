@@ -46,7 +46,7 @@ export default function AboutPage() {
 
   const fetchProfiles = async () => {
     try {
-      // First get all teacher profiles
+      // Get all teacher profiles with basic info
       const { data: teacherProfiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, full_name, role, avatar_url, is_teacher')
@@ -56,22 +56,11 @@ export default function AboutPage() {
 
       if (profilesError) throw profilesError
 
-      // Then get emails for each profile
-      const profilesWithEmails: Profile[] = []
-      
-      for (const profile of teacherProfiles || []) {
-        // Get user email from auth.users
-        const { data: userData, error: userError } = await supabase.auth.admin.listUsers()
-        if (!userError && userData?.users) {
-          const user = userData.users.find(u => u.id === profile.id)
-          if (user) {
-            profilesWithEmails.push({
-              ...profile,
-              email: user.email || 'Unknown'
-            })
-          }
-        }
-      }
+      // For now, just use the profiles without emails to avoid the admin API issue
+      const profilesWithEmails: Profile[] = (teacherProfiles || []).map(profile => ({
+        ...profile,
+        email: profile.full_name || 'Unknown User' // Use name as placeholder for email
+      }))
 
       setProfiles(profilesWithEmails)
     } catch (error) {
