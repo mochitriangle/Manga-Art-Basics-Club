@@ -28,74 +28,73 @@ export default async function HomePage() {
     .limit(3)
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto px-4">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="text-center space-y-4 py-8">
-        <h1 className="text-4xl font-bold tracking-tight">Manga & Art Basics Club</h1>
-        <p className="text-xl text-muted-foreground">Offline: RC Palmer Secondary School</p>
+      <div className="text-center py-16 space-y-4">
+        <h1 className="text-5xl font-bold tracking-tight text-gray-900">Manga & Art Basics Club</h1>
+        <p className="text-xl text-gray-600">Offline: RC Palmer Secondary School</p>
       </div>
 
       {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Left Side - Action Buttons */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Button asChild size="lg" className="h-16 text-base font-medium">
-              <Link href="/tutorials">Tutorials</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="h-16 bg-transparent text-base font-medium">
-              <Link href="/competitions">Competitions</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="h-16 bg-transparent text-base font-medium">
-              <Link href="/homework">Hand In Homework</Link>
-            </Button>
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+          {/* Left Side - Action Buttons */}
+          <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <Button asChild size="lg" className="h-20 text-lg font-semibold bg-gray-900 hover:bg-gray-800 text-white border-0 shadow-lg">
+                <Link href="/tutorials">Tutorials</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-50 shadow-lg">
+                <Link href="/competitions">Competitions</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-50 shadow-lg">
+                <Link href="/homework">Hand In Homework</Link>
+              </Button>
+            </div>
           </div>
-        </div>
 
-        {/* Right Side - Upcoming Poster */}
-        <div className="lg:col-span-1 w-full">
-          <Card className="aspect-video h-full shadow-sm border-2 max-w-sm mx-auto lg:mx-0">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg font-semibold">Upcoming Posters</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 flex-1 p-4">
+          {/* Right Side - Upcoming Poster */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg border-2 border-gray-200 shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Upcoming Posters</h3>
+              
               {posters && posters.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {posters.map((poster) => (
-                    <div key={poster.id} className="text-center space-y-2">
-                      <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted border">
+                    <div key={poster.id} className="text-center space-y-3">
+                      <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                         <img 
                           src={poster.image_url} 
                           alt={poster.title}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <div className="px-2">
-                        <h4 className="font-semibold text-sm">{poster.title}</h4>
+                      <div>
+                        <h4 className="font-semibold text-gray-900">{poster.title}</h4>
                         {poster.description && (
-                          <p className="text-xs text-muted-foreground mt-1">{poster.description}</p>
+                          <p className="text-sm text-gray-600 mt-1">{poster.description}</p>
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center text-muted-foreground flex flex-col items-center justify-center h-full min-h-[200px]">
-                  <div className="w-16 h-16 mx-auto bg-muted rounded-lg flex items-center justify-center mb-3 border">
-                    <div className="w-8 h-8 bg-muted-foreground/20 rounded"></div>
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-4 border border-gray-200">
+                    <div className="w-10 h-10 bg-gray-300 rounded"></div>
                   </div>
-                  <p className="text-sm font-medium">No posters available</p>
+                  <p className="text-gray-600 font-medium">No posters available</p>
                 </div>
               )}
               
               {/* Show upload button for admins/staff */}
               {(userRole === 'admin' || userRole === 'staff') && (
-                <div className="mt-4 pt-4 border-t">
+                <div className="mt-6 pt-6 border-t border-gray-200">
                   <PosterUpload />
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
