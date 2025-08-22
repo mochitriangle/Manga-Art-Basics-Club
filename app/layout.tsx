@@ -29,25 +29,34 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://byictuxdystsrdbynnsl.supabase.co" />
         
-        {/* Performance monitoring */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Performance monitoring
-              if (typeof window !== 'undefined') {
-                window.addEventListener('load', () => {
-                  if ('performance' in window) {
-                    const perfData = performance.getEntriesByType('navigation')[0];
-                    if (perfData) {
-                      console.log('Page Load Time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
-                      console.log('DOM Content Loaded:', perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart, 'ms');
-                    }
-                  }
-                });
-              }
-            `,
-          }}
-        />
+                            {/* Performance monitoring */}
+                    <script
+                      dangerouslySetInnerHTML={{
+                        __html: `
+                          // Performance monitoring
+                          if (typeof window !== 'undefined') {
+                            window.addEventListener('load', () => {
+                              if ('performance' in window) {
+                                const perfData = performance.getEntriesByType('navigation')[0];
+                                if (perfData && perfData.loadEventEnd > 0 && perfData.loadEventStart > 0) {
+                                  const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+                                  if (loadTime > 0) {
+                                    console.log('Page Load Time:', loadTime, 'ms');
+                                  }
+                                }
+                                
+                                if (perfData && perfData.domContentLoadedEventEnd > 0 && perfData.domContentLoadedEventStart > 0) {
+                                  const domTime = perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart;
+                                  if (domTime > 0) {
+                                    console.log('DOM Content Loaded:', domTime, 'ms');
+                                  }
+                                }
+                              }
+                            });
+                          }
+                        `,
+                      }}
+                    />
       </head>
       <body className={`${GeistSans.className} antialiased`}>
         <ThemeProvider

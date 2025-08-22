@@ -66,7 +66,7 @@ export default function HomeworkListPage() {
         setSubmissions(submissionsWithReviews)
       }
     } catch (error) {
-      toast.error("获取作业列表失败")
+      toast.error("Failed to get homework list")
     } finally {
       setIsLoading(false)
     }
@@ -79,7 +79,7 @@ export default function HomeworkListPage() {
         .createSignedUrl(filePath, 600)
 
       if (error) {
-        toast.error("下载链接生成失败：" + error.message)
+        toast.error("Failed to generate download link: " + error.message)
         return
       }
 
@@ -91,9 +91,9 @@ export default function HomeworkListPage() {
       link.click()
       document.body.removeChild(link)
 
-      toast.success("开始下载作业文件")
+              toast.success("Starting homework file download")
     } catch (error) {
-      toast.error("下载失败，请重试")
+              toast.error("Download failed, please try again")
     }
   }
 
@@ -112,9 +112,9 @@ export default function HomeworkListPage() {
         })
 
       if (error) {
-        toast.error("评分失败：" + error.message)
+        toast.error("Grading failed: " + error.message)
       } else {
-        toast.success("作业评分成功！")
+        toast.success("Homework graded successfully!")
         setIsReviewDialogOpen(false)
         setReviewData({ score: 0, feedback: "" })
         setSelectedSubmission(null)
@@ -123,7 +123,7 @@ export default function HomeworkListPage() {
         getSubmissions()
       }
     } catch (error) {
-      toast.error("评分失败，请重试")
+              toast.error("Grading failed, please try again")
     }
   }
 
@@ -139,7 +139,7 @@ export default function HomeworkListPage() {
     return (
       <div className="space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold">作业管理</h1>
+          <h1 className="text-3xl font-bold">Homework Management</h1>
         </div>
         <Card>
           <CardContent className="p-6">
@@ -154,8 +154,8 @@ export default function HomeworkListPage() {
     <div className="space-y-8">
       {/* Page Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold">作业管理</h1>
-        <p className="text-lg text-muted-foreground">查看和评分学生提交的作业</p>
+        <h1 className="text-3xl font-bold">Homework Management</h1>
+        <p className="text-lg text-muted-foreground">View and grade student homework submissions</p>
       </div>
 
       {/* Submissions List */}
@@ -163,7 +163,7 @@ export default function HomeworkListPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            作业列表 ({submissions.length})
+            Homework List ({submissions.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -202,7 +202,7 @@ export default function HomeworkListPage() {
                         <div className="flex items-center gap-2">
                           <Star className={`h-4 w-4 ${getScoreColor(submission.review.score)}`} />
                           <span className={`font-medium ${getScoreColor(submission.review.score)}`}>
-                            评分：{submission.review.score}/100
+                            Score: {submission.review.score}/100
                           </span>
                           {submission.review.feedback && (
                             <div className="flex items-center gap-1">
@@ -223,7 +223,7 @@ export default function HomeworkListPage() {
                         onClick={() => handleDownload(submission.file_path, submission.file_path.split('/').pop() || 'homework')}
                       >
                         <Download className="h-4 w-4 mr-1" />
-                        下载
+                        Download
                       </Button>
                       
                       {!submission.review && (
@@ -235,7 +235,7 @@ export default function HomeworkListPage() {
                           }}
                         >
                           <Star className="h-4 w-4 mr-1" />
-                          评分
+                          Grade
                         </Button>
                       )}
                     </div>
@@ -244,7 +244,7 @@ export default function HomeworkListPage() {
               ))
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                暂无作业提交
+                No homework submissions yet
               </div>
             )}
           </div>
@@ -255,21 +255,21 @@ export default function HomeworkListPage() {
       <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>作业评分</DialogTitle>
+            <DialogTitle>Grade Homework</DialogTitle>
           </DialogHeader>
           {selectedSubmission && (
             <div className="space-y-4">
               <div className="p-4 bg-muted rounded-lg">
                 <div className="text-sm">
-                  <div><strong>学生：</strong>{selectedSubmission.user.full_name || '未设置姓名'}</div>
-                  <div><strong>课程：</strong>{selectedSubmission.lesson.title}</div>
-                  <div><strong>提交时间：</strong>{new Date(selectedSubmission.created_at).toLocaleDateString('zh-CN')}</div>
+                  <div><strong>Student:</strong> {selectedSubmission.user.full_name || 'Name not set'}</div>
+                  <div><strong>Lesson:</strong> {selectedSubmission.lesson.title}</div>
+                  <div><strong>Submitted:</strong> {new Date(selectedSubmission.created_at).toLocaleDateString()}</div>
                 </div>
               </div>
               
               <form onSubmit={handleReview} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="score">评分 (0-100)</Label>
+                  <Label htmlFor="score">Score (0-100)</Label>
                   <Input
                     id="score"
                     type="number"
@@ -282,13 +282,13 @@ export default function HomeworkListPage() {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="feedback">反馈意见</Label>
+                  <Label htmlFor="feedback">Feedback</Label>
                   <Textarea
                     id="feedback"
                     value={reviewData.feedback}
                     onChange={(e) => setReviewData(prev => ({ ...prev, feedback: e.target.value }))}
                     rows={4}
-                    placeholder="请输入对作业的评价和建议..."
+                    placeholder="Enter your evaluation and suggestions for the homework..."
                   />
                 </div>
 
@@ -298,10 +298,10 @@ export default function HomeworkListPage() {
                     variant="outline"
                     onClick={() => setIsReviewDialogOpen(false)}
                   >
-                    取消
+                    Cancel
                   </Button>
                   <Button type="submit">
-                    提交评分
+                    Submit Grade
                   </Button>
                 </div>
               </form>
