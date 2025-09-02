@@ -30,9 +30,6 @@ export default function RootLayout({
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                     <link rel="dns-prefetch" href="https://byictuxdystsrdbynnsl.supabase.co" />
                     
-                    {/* Preload critical CSS */}
-                    <link rel="preload" href="/app/globals.css" as="style" />
-                    
                     {/* Resource hints for better performance */}
                     <link rel="prefetch" href="/tutorials" />
                     <link rel="prefetch" href="/competitions" />
