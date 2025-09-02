@@ -6,7 +6,10 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "analyze": "ANALYZE=true next build",
+    "build:prod": "NODE_ENV=production next build",
+    "perf": "next build && next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

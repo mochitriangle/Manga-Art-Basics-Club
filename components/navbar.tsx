@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Home", href: "/" },
+  { name: "Dashboard", href: "/dashboard" },
   { name: "Tutorials", href: "/tutorials" },
   { name: "Competitions", href: "/competitions" },
   { name: "About", href: "/about" },
@@ -128,6 +129,9 @@ export function Navbar() {
                     </p>
                   </div>
                 </div>
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/profile">Profile</Link>
                 </DropdownMenuItem>

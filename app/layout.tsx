@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
+import { PerformanceMonitor } from "@/components/performance-monitor"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -23,13 +24,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Preload critical resources */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://byictuxdystsrdbynnsl.supabase.co" />
-        
-                            {/* Performance monitoring */}
+                        <head>
+                    {/* Preload critical resources */}
+                    <link rel="preconnect" href="https://fonts.googleapis.com" />
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                    <link rel="dns-prefetch" href="https://byictuxdystsrdbynnsl.supabase.co" />
+                    
+                    {/* Preload critical CSS */}
+                    <link rel="preload" href="/app/globals.css" as="style" />
+                    
+                    {/* Resource hints for better performance */}
+                    <link rel="prefetch" href="/tutorials" />
+                    <link rel="prefetch" href="/competitions" />
+                    <link rel="prefetch" href="/about" />
+                    
+                    {/* Performance monitoring */}
                     <script
                       dangerouslySetInnerHTML={{
                         __html: `
@@ -57,7 +66,7 @@ export default function RootLayout({
                         `,
                       }}
                     />
-      </head>
+                  </head>
       <body className={`${GeistSans.className} antialiased`}>
         <ThemeProvider
           attribute="class"
@@ -70,6 +79,7 @@ export default function RootLayout({
             <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
           </div>
         </ThemeProvider>
+        <PerformanceMonitor />
       </body>
     </html>
   )

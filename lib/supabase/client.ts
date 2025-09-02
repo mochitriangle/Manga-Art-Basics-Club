@@ -22,6 +22,16 @@ export function createSupabaseClient() {
       headers: {
         'X-Client-Info': 'manga-art-club'
       }
+    },
+    // Performance optimizations
+    realtime: {
+      params: {
+        eventsPerSecond: 10
+      }
+    },
+    // Connection pooling
+    db: {
+      schema: 'public'
     }
   })
 
