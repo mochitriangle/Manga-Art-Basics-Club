@@ -5,7 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PerformanceMonitor } from "@/components/performance-monitor"
-import "./globals.css"
+import "@/styles/globals.css"
 
 export const metadata: Metadata = {
   title: "Manga & Art Basics Club",
