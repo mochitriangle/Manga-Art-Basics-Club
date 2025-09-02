@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PerformanceMonitor } from "@/components/performance-monitor"
+import { CriticalCSS } from "@/components/critical-css"
 import "@/styles/globals.css"
 
 export const metadata: Metadata = {
@@ -25,6 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
                         <head>
+                    {/* Critical CSS for above-the-fold content */}
+                    <CriticalCSS />
+                    
                     {/* Preload critical resources */}
                     <link rel="preconnect" href="https://fonts.googleapis.com" />
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

@@ -3,8 +3,67 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import { PosterUpload } from '@/components/poster-upload'
+import { Suspense } from 'react'
 
 export default async function HomePage() {
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <div className="text-center py-16 space-y-4">
+        <h1 className="text-5xl font-bold tracking-tight text-gray-900">Manga & Art Basics Club</h1>
+        <p className="text-xl text-gray-600">Offline: RC Palmer Secondary School</p>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+          {/* Left Side - Action Buttons */}
+          <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <Button asChild size="lg" className="h-20 text-lg font-semibold">
+                <Link href="/tutorials">Tutorials</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
+                <Link href="/homework">Hand In Homework</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
+                <Link href="/competitions">Competitions</Link>
+              </Button>
+            </div>
+          </div>
+
+          {/* Right Side - Upcoming Poster */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg border-2 border-gray-200 shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Upcoming Posters</h3>
+              
+              {/* Async poster loading */}
+              <Suspense fallback={<PosterSkeleton />}>
+                <PosterSection />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Skeleton loading component
+function PosterSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="text-center space-y-3">
+        <div className="w-full aspect-video rounded-lg bg-gray-200 animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4 mx-auto"></div>
+        <div className="h-3 bg-gray-200 rounded animate-pulse w-1/2 mx-auto"></div>
+      </div>
+    </div>
+  )
+}
+
+// Separate component for async poster loading
+async function PosterSection() {
   const supabase = await createSupabaseServer()
   const { data: { user } } = await supabase.auth.getUser()
   
