@@ -7,11 +7,11 @@ import { Suspense } from 'react'
 
 export default async function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white layout-stable">
       {/* Hero Section */}
       <div className="text-center py-16 space-y-4">
-        <h1 className="text-5xl font-bold tracking-tight text-gray-900">Manga & Art Basics Club</h1>
-        <p className="text-xl text-gray-600">Offline: RC Palmer Secondary School</p>
+        <h1 className="text-5xl font-bold tracking-tight text-gray-900 text-stable">Manga & Art Basics Club</h1>
+        <p className="text-xl text-gray-600 text-stable">Offline: RC Palmer Secondary School</p>
       </div>
 
       {/* Main Content */}
@@ -20,13 +20,13 @@ export default async function HomePage() {
           {/* Left Side - Action Buttons */}
           <div className="lg:col-span-2">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <Button asChild size="lg" className="h-20 text-lg font-semibold">
+              <Button asChild size="lg" className="h-20 text-lg font-semibold btn-stable">
                 <Link href="/tutorials">Tutorials</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold btn-stable">
                 <Link href="/homework">Hand In Homework</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
+              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold btn-stable">
                 <Link href="/competitions">Competitions</Link>
               </Button>
             </div>
@@ -87,75 +87,42 @@ async function PosterSection() {
     .limit(3)
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <div className="text-center py-16 space-y-4">
-        <h1 className="text-5xl font-bold tracking-tight text-gray-900">Manga & Art Basics Club</h1>
-        <p className="text-xl text-gray-600">Offline: RC Palmer Secondary School</p>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-          {/* Left Side - Action Buttons */}
-          <div className="lg:col-span-2">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <Button asChild size="lg" className="h-20 text-lg font-semibold">
-                <Link href="/tutorials">Tutorials</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
-                <Link href="/competitions">Competitions</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="h-20 text-lg font-semibold">
-                <Link href="/homework">Hand In Homework</Link>
-              </Button>
+    <>
+      {posters && posters.length > 0 ? (
+        <div className="space-y-6">
+          {posters.map((poster) => (
+            <div key={poster.id} className="text-center space-y-3">
+              <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                <img 
+                  src={poster.image_url} 
+                  alt={poster.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 text-stable">{poster.title}</h4>
+                {poster.description && (
+                  <p className="text-sm text-gray-600 mt-1 text-stable">{poster.description}</p>
+                )}
+              </div>
             </div>
-          </div>
-
-          {/* Right Side - Upcoming Poster */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg border-2 border-gray-200 shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Upcoming Posters</h3>
-              
-              {posters && posters.length > 0 ? (
-                <div className="space-y-6">
-                  {posters.map((poster) => (
-                    <div key={poster.id} className="text-center space-y-3">
-                      <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-                        <img 
-                          src={poster.image_url} 
-                          alt={poster.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{poster.title}</h4>
-                        {poster.description && (
-                          <p className="text-sm text-gray-600 mt-1">{poster.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-4 border border-gray-200">
-                    <div className="w-10 h-10 bg-gray-300 rounded"></div>
-                  </div>
-                  <p className="text-gray-600 font-medium">No posters available</p>
-                </div>
-              )}
-              
-              {/* Show upload button for admins/staff */}
-              {(userRole === 'admin' || userRole === 'staff') && (
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <PosterUpload />
-                </div>
-              )}
-            </div>
-          </div>
+          ))}
         </div>
-      </div>
-    </div>
+      ) : (
+        <div className="text-center py-12">
+          <div className="w-20 h-20 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-4 border border-gray-200">
+            <div className="w-10 h-10 bg-gray-300 rounded"></div>
+          </div>
+          <p className="text-gray-600 font-medium text-stable">No posters available</p>
+        </div>
+      )}
+      
+      {/* Show upload button for admins/staff */}
+      {(userRole === 'admin' || userRole === 'staff') && (
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <PosterUpload />
+        </div>
+      )}
+    </>
   )
 }

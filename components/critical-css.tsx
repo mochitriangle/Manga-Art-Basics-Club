@@ -18,6 +18,45 @@ export function CriticalCSS() {
             box-sizing: border-box;
           }
           
+          /* Layout stability - reserve space for dynamic content */
+          .layout-stable {
+            min-height: 100vh;
+            overflow-x: hidden;
+          }
+          
+          /* Prevent image layout shifts */
+          img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+          }
+          
+          /* Aspect ratio containers */
+          .aspect-video {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+          }
+          
+          .aspect-square {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+          }
+          
+          /* Prevent text layout shifts */
+          .text-stable {
+            line-height: 1.6;
+            min-height: 1.6em;
+          }
+          
+          /* Button layout stability */
+          .btn-stable {
+            min-height: 44px;
+            min-width: 120px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
           /* Critical layout styles */
           .min-h-screen {
             min-height: 100vh;
