@@ -57,6 +57,17 @@ const nextConfig = {
       config.optimization.sideEffects = false;
     }
     
+    // Performance optimizations
+    config.optimization.moduleIds = 'deterministic';
+    config.optimization.chunkIds = 'deterministic';
+    
+    // Reduce bundle size warnings
+    config.performance = {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000,
+    };
+    
     // Bundle analyzer (uncomment for analysis)
     // if (process.env.ANALYZE === 'true') {
     //   const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -82,6 +93,33 @@ const nextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+        ],
+      },
+      {
+        source: '/tutorials',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      {
+        source: '/competitions',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      {
+        source: '/about',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, stale-while-revalidate=86400',
           },
         ],
       },
