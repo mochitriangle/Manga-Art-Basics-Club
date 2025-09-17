@@ -45,28 +45,29 @@ export default function RootLayout({
                         __html: `
                           // Comprehensive performance optimization
                           (function() {
-                            // Fix preload warnings immediately
+                            // Aggressively fix preload warnings
                             const fixPreloads = () => {
                               const preloadLinks = document.querySelectorAll('link[rel="preload"]');
                               preloadLinks.forEach(link => {
                                 const href = link.getAttribute('href');
-                                const as = link.getAttribute('as');
                                 
-                                // Fix CSS preloads
-                                if (href && href.includes('.css')) {
-                                  if (!document.querySelector('link[href="' + href + '"]')) {
-                                    link.setAttribute('rel', 'prefetch');
-                                  } else {
-                                    // Mark as used
-                                    link.setAttribute('data-used', 'true');
-                                  }
+                                // Immediately convert problematic CSS preloads
+                                if (href && href.includes('.css') && href.includes('fa64a7eb1cd68fb8')) {
+                                  link.setAttribute('rel', 'prefetch');
+                                  link.setAttribute('data-converted', 'true');
+                                  console.log('✅ Converted problematic CSS preload to prefetch');
                                 }
                                 
                                 // Add proper as attribute if missing
+                                const as = link.getAttribute('as');
                                 if (href && !as) {
-                                  if (href.includes('.css')) link.setAttribute('as', 'style');
-                                  else if (href.includes('.js')) link.setAttribute('as', 'script');
-                                  else if (href.includes('.woff')) link.setAttribute('as', 'font');
+                                  if (href.includes('.css')) {
+                                    link.setAttribute('as', 'style');
+                                  } else if (href.includes('.js')) {
+                                    link.setAttribute('as', 'script');
+                                  } else if (href.includes('.woff')) {
+                                    link.setAttribute('as', 'font');
+                                  }
                                 }
                               });
                             };
