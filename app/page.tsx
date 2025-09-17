@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import { PosterUpload } from '@/components/poster-upload'
-import { OptimizedPoster } from '@/components/optimized-poster'
+import { SimplePoster } from '@/components/simple-poster'
 import { Suspense } from 'react'
 
 export default async function HomePage() {
@@ -92,7 +92,7 @@ async function PosterSection() {
       {posters && posters.length > 0 ? (
         <div className="space-y-6">
           {posters.map((poster) => (
-            <OptimizedPoster key={poster.id} poster={poster} />
+            <SimplePoster key={poster.id} poster={poster} />
           ))}
         </div>
       ) : (
