@@ -31,6 +31,33 @@ export function CriticalCSS() {
             display: block;
           }
           
+          /* Fix for Next.js Image component */
+          img[data-nimg="fill"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+          
+          /* Prevent layout shifts from dynamic content */
+          [data-dynamic] {
+            min-height: 200px;
+          }
+          
+          /* Optimize poster container */
+          .poster-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1650 / 2562;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+          }
+          
           /* Aspect ratio containers */
           .aspect-video {
             aspect-ratio: 16 / 9;

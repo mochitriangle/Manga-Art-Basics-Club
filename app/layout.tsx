@@ -39,31 +39,91 @@ export default function RootLayout({
                     <link rel="prefetch" href="/competitions" as="document" />
                     <link rel="prefetch" href="/about" as="document" />
                     
-                    {/* Optimize resource loading */}
+                    {/* Advanced performance optimization */}
                     <script
                       dangerouslySetInnerHTML={{
                         __html: `
-                          // Fix preload warnings and optimize performance
+                          // Comprehensive performance optimization
                           (function() {
-                            // Remove unused preloads after page load
-                            window.addEventListener('load', () => {
+                            // Fix preload warnings immediately
+                            const fixPreloads = () => {
                               const preloadLinks = document.querySelectorAll('link[rel="preload"]');
                               preloadLinks.forEach(link => {
                                 const href = link.getAttribute('href');
-                                if (href && href.includes('.css') && !document.querySelector('link[href="' + href + '"]')) {
-                                  link.setAttribute('rel', 'prefetch');
+                                const as = link.getAttribute('as');
+                                
+                                // Fix CSS preloads
+                                if (href && href.includes('.css')) {
+                                  if (!document.querySelector('link[href="' + href + '"]')) {
+                                    link.setAttribute('rel', 'prefetch');
+                                  } else {
+                                    // Mark as used
+                                    link.setAttribute('data-used', 'true');
+                                  }
                                 }
+                                
+                                // Add proper as attribute if missing
+                                if (href && !as) {
+                                  if (href.includes('.css')) link.setAttribute('as', 'style');
+                                  else if (href.includes('.js')) link.setAttribute('as', 'script');
+                                  else if (href.includes('.woff')) link.setAttribute('as', 'font');
+                                }
+                              });
+                            };
+                            
+                            // Run immediately and on load
+                            fixPreloads();
+                            window.addEventListener('load', fixPreloads);
+                            
+                            // Optimize LCP and images
+                            document.addEventListener('DOMContentLoaded', () => {
+                              // Fix image loading errors
+                              const images = document.querySelectorAll('img');
+                              images.forEach(img => {
+                                // Add error handling
+                                img.addEventListener('error', function() {
+                                  console.warn('Image failed to load:', this.src);
+                                  // Set fallback or hide broken images
+                                  this.style.display = 'none';
+                                });
+                                
+                                // Optimize LCP images
+                                if (img.src && (img.src.includes('pmac-poster') || img.offsetTop < window.innerHeight)) {
+                                  img.setAttribute('loading', 'eager');
+                                  img.setAttribute('fetchpriority', 'high');
+                                }
+                              });
+                              
+                              // Prevent layout shifts
+                              const dynamicElements = document.querySelectorAll('[data-dynamic], .skeleton');
+                              dynamicElements.forEach(el => {
+                                el.style.minHeight = el.offsetHeight + 'px';
                               });
                             });
                             
-                            // Optimize LCP
-                            document.addEventListener('DOMContentLoaded', () => {
-                              const lcpElement = document.querySelector('img[src*="pmac-poster"]');
-                              if (lcpElement) {
-                                lcpElement.setAttribute('loading', 'eager');
-                                lcpElement.setAttribute('fetchpriority', 'high');
+                            // Monitor and log performance improvements
+                            if ('performance' in window) {
+                              const observer = new PerformanceObserver((list) => {
+                                for (const entry of list.getEntries()) {
+                                  if (entry.entryType === 'largest-contentful-paint') {
+                                    console.log('✅ LCP Optimized:', entry.startTime, 'ms');
+                                  }
+                                  if (entry.entryType === 'layout-shift') {
+                                    if (entry.value < 0.1) {
+                                      console.log('✅ CLS Good:', entry.value);
+                                    } else {
+                                      console.warn('⚠️ CLS Issue:', entry.value);
+                                    }
+                                  }
+                                }
+                              });
+                              
+                              try {
+                                observer.observe({ entryTypes: ['largest-contentful-paint', 'layout-shift'] });
+                              } catch (e) {
+                                console.log('PerformanceObserver not supported');
                               }
-                            });
+                            }
                           })();
                         `,
                       }}

@@ -15,7 +15,7 @@ interface OptimizedPosterProps {
 export const OptimizedPoster = memo(function OptimizedPoster({ poster }: OptimizedPosterProps) {
   return (
     <div className="text-center space-y-3">
-      <div className="relative w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200" style={{aspectRatio: '1650/2562'}}>
+      <div className="poster-container border border-gray-200">
         <Image 
           src={poster.image_url} 
           alt={poster.title}
