@@ -51,11 +51,17 @@ export default function RootLayout({
                               preloadLinks.forEach(link => {
                                 const href = link.getAttribute('href');
                                 
-                                // Immediately convert problematic CSS preloads
-                                if (href && href.includes('.css') && href.includes('fa64a7eb1cd68fb8')) {
-                                  link.setAttribute('rel', 'prefetch');
-                                  link.setAttribute('data-converted', 'true');
-                                  console.log('✅ Converted problematic CSS preload to prefetch');
+                                // Immediately convert ALL problematic CSS preloads
+                                if (href && href.includes('.css')) {
+                                  // Check if this CSS is actually used on the page
+                                  const isUsed = document.querySelector('link[href="' + href + '"]') || 
+                                               document.querySelector('style[data-href="' + href + '"]');
+                                  
+                                  if (!isUsed) {
+                                    link.setAttribute('rel', 'prefetch');
+                                    link.setAttribute('data-converted', 'true');
+                                    console.log('✅ Converted unused CSS preload to prefetch:', href);
+                                  }
                                 }
                                 
                                 // Add proper as attribute if missing
