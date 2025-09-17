@@ -150,13 +150,13 @@ export default function AboutPage() {
         <CardContent className="p-6">
           <div className="text-center space-y-4">
             <h2 className="text-2xl font-bold text-blue-900 flex items-center justify-center gap-2">
-              🎨 Draw your dream, start from the basics!
+              Draw your dream, start from the basics!
             </h2>
             
             <div className="grid md:grid-cols-2 gap-6 text-left">
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold text-blue-800 flex items-center gap-2">
-                  🎨 Every Tuesday – Professional Art Classes
+                  Every Tuesday – Professional Art Classes
                 </h3>
                 <ul className="space-y-1 text-sm text-gray-700">
                   <li>• Stickman & Blockman frameworks</li>
@@ -169,7 +169,7 @@ export default function AboutPage() {
               
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold text-purple-800 flex items-center gap-2">
-                  🎮 Every Thursday – Social Activities
+                  Every Thursday – Social Activities
                 </h3>
                 <p className="text-sm text-gray-700">
                   Anime & manga sharing · Music · Games · Meet like-minded friends!
@@ -183,7 +183,7 @@ export default function AboutPage() {
             </div>
             
             <blockquote className="text-lg font-semibold text-orange-600 italic">
-              🔥 "Stop copying—start creating! Build your art from the ground up."
+              "Stop copying—start creating! Build your art from the ground up."
             </blockquote>
           </div>
         </CardContent>
