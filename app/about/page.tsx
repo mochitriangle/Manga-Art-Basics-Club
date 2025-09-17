@@ -57,7 +57,7 @@ export default function AboutPage() {
       if (profilesError) throw profilesError
 
       // For now, just use the profiles without emails to avoid the admin API issue
-      const profilesWithEmails: Profile[] = (teacherProfiles || []).map(profile => ({
+      const profilesWithEmails: Profile[] = (teacherProfiles || []).map((profile: any) => ({
         ...profile,
         email: profile.full_name || 'Unknown User' // Use name as placeholder for email
       }))
@@ -144,6 +144,50 @@ export default function AboutPage() {
           Meet the dedicated teachers and staff who make our Manga & Art Basics Club possible.
         </p>
       </div>
+
+      {/* Promotional Block */}
+      <Card className="mb-8 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200">
+        <CardContent className="p-6">
+          <div className="text-center space-y-4">
+            <h2 className="text-2xl font-bold text-blue-900 flex items-center justify-center gap-2">
+              🎨 Draw your dream, start from the basics!
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-6 text-left">
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-blue-800 flex items-center gap-2">
+                  🎨 Every Tuesday – Professional Art Classes
+                </h3>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Stickman & Blockman frameworks</li>
+                  <li>• Proportion & dynamic poses</li>
+                  <li>• Shape simplification & perspective</li>
+                  <li>• Light, shadow & tonal layering</li>
+                  <li>• Quick sketching methods that actually work</li>
+                </ul>
+              </div>
+              
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-purple-800 flex items-center gap-2">
+                  🎮 Every Thursday – Social Activities
+                </h3>
+                <p className="text-sm text-gray-700">
+                  Anime & manga sharing · Music · Games · Meet like-minded friends!
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600">
+              <span className="flex items-center gap-1">📍 Room 203</span>
+              <span className="flex items-center gap-1">🌐 manga-art-basics-club.vercel.app</span>
+            </div>
+            
+            <blockquote className="text-lg font-semibold text-orange-600 italic">
+              🔥 "Stop copying—start creating! Build your art from the ground up."
+            </blockquote>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Teacher Assignment (Admin Only) */}
       {userRole === 'admin' && (
