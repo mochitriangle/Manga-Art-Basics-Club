@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import { PosterUpload } from '@/components/poster-upload'
+import { OptimizedPoster } from '@/components/optimized-poster'
 import { Suspense } from 'react'
 
 export default async function HomePage() {
@@ -91,21 +92,7 @@ async function PosterSection() {
       {posters && posters.length > 0 ? (
         <div className="space-y-6">
           {posters.map((poster) => (
-            <div key={poster.id} className="text-center space-y-3">
-              <div className="relative w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200" style={{aspectRatio: '1650/2562'}}>
-                <img 
-                  src={poster.image_url} 
-                  alt={poster.title}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 text-stable">{poster.title}</h4>
-                {poster.description && (
-                  <p className="text-sm text-gray-600 mt-1 text-stable">{poster.description}</p>
-                )}
-              </div>
-            </div>
+            <OptimizedPoster key={poster.id} poster={poster} />
           ))}
         </div>
       ) : (

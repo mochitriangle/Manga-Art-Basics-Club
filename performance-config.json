@@ -1,0 +1,39 @@
+{
+  "performance": {
+    "imageOptimization": {
+      "formats": ["image/webp", "image/avif"],
+      "quality": 80,
+      "sizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+      "deviceSizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840]
+    },
+    "caching": {
+      "staticPages": {
+        "maxAge": 3600,
+        "staleWhileRevalidate": 86400
+      },
+      "apiRoutes": {
+        "maxAge": 300,
+        "staleWhileRevalidate": 3600
+      }
+    },
+    "bundleOptimization": {
+      "treeShaking": true,
+      "minification": true,
+      "codeSplitting": true,
+      "lazyLoading": true
+    },
+    "databaseOptimization": {
+      "connectionPooling": true,
+      "queryOptimization": true,
+      "indexing": true,
+      "caching": true
+    },
+    "coreWebVitals": {
+      "targets": {
+        "LCP": 2500,
+        "FID": 100,
+        "CLS": 0.1
+      }
+    }
+  }
+}
