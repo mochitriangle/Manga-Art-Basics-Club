@@ -46,17 +46,17 @@ export default function AboutPage() {
 
   const fetchProfiles = async () => {
     try {
-      // Get all teacher profiles with basic info
+      // Get all teacher and admin profiles with basic info
       const { data: teacherProfiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, full_name, role, avatar_url, is_teacher')
-        .eq('is_teacher', true)
-        .order('role', { ascending: false }) // Admins first
+        .in('role', ['teacher', 'admin', 'staff'])
+        .order('role', { ascending: false }) // Admins first, then staff, then teachers
         .order('full_name')
 
       if (profilesError) throw profilesError
 
-      // For now, just use the profiles without emails to avoid the admin API issue
+      // Map profiles and use email from auth if available
       const profilesWithEmails: Profile[] = (teacherProfiles || []).map((profile: any) => ({
         ...profile,
         email: profile.full_name || 'Unknown User' // Use name as placeholder for email
@@ -117,11 +117,11 @@ export default function AboutPage() {
 
       if (error) throw error
 
-      toast.success(`${email} is no longer a teacher`)
+      toast.success(`${email} role has been removed`)
       fetchProfiles() // Refresh the list
     } catch (error) {
-      console.error('Error removing teacher:', error)
-      toast.error('Failed to remove teacher role')
+      console.error('Error removing role:', error)
+      toast.error('Failed to remove role')
     }
   }
 
@@ -243,13 +243,19 @@ export default function AboutPage() {
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                   profile.role === 'admin' 
                     ? 'bg-red-100 text-red-800' 
+                    : profile.role === 'staff'
+                    ? 'bg-purple-100 text-purple-800'
                     : 'bg-blue-100 text-blue-800'
                 }`}>
-                  {profile.role === 'admin' ? 'Administrator' : 'Teacher'}
+                  {profile.role === 'admin' 
+                    ? 'Administrator' 
+                    : profile.role === 'staff'
+                    ? 'Staff Member'
+                    : 'Teacher'}
                 </span>
               </div>
 
-              {/* Remove Teacher Button (Admin Only) */}
+              {/* Remove Teacher/Staff Button (Admin Only) */}
               {userRole === 'admin' && profile.role !== 'admin' && (
                 <Button
                   variant="outline"
@@ -257,7 +263,7 @@ export default function AboutPage() {
                   onClick={() => removeTeacher(profile.id, profile.email)}
                   className="w-full"
                 >
-                  Remove Teacher
+                  Remove {profile.role === 'staff' ? 'Staff' : 'Teacher'}
                 </Button>
               )}
             </CardContent>
