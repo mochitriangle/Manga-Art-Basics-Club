@@ -35,7 +35,7 @@ export default async function HomePage() {
           {/* Right Side - Upcoming Poster */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg border-2 border-gray-200 shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Upcoming Posters</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-6">WELCOME!</h3>
               
               {/* Async poster loading */}
               <Suspense fallback={<PosterSkeleton />}>
@@ -92,11 +92,11 @@ async function PosterSection() {
         <div className="space-y-6">
           {posters.map((poster) => (
             <div key={poster.id} className="text-center space-y-3">
-              <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+              <div className="relative w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200" style={{aspectRatio: '1650/2562'}}>
                 <img 
                   src={poster.image_url} 
                   alt={poster.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
               <div>
