@@ -34,10 +34,40 @@ export default function RootLayout({
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                     <link rel="dns-prefetch" href="https://byictuxdystsrdbynnsl.supabase.co" />
                     
-                    {/* Resource hints for better performance */}
-                    <link rel="prefetch" href="/tutorials" />
-                    <link rel="prefetch" href="/competitions" />
-                    <link rel="prefetch" href="/about" />
+                    {/* Optimize resource hints - only prefetch on hover */}
+                    <link rel="prefetch" href="/tutorials" as="document" />
+                    <link rel="prefetch" href="/competitions" as="document" />
+                    <link rel="prefetch" href="/about" as="document" />
+                    
+                    {/* Optimize resource loading */}
+                    <script
+                      dangerouslySetInnerHTML={{
+                        __html: `
+                          // Fix preload warnings and optimize performance
+                          (function() {
+                            // Remove unused preloads after page load
+                            window.addEventListener('load', () => {
+                              const preloadLinks = document.querySelectorAll('link[rel="preload"]');
+                              preloadLinks.forEach(link => {
+                                const href = link.getAttribute('href');
+                                if (href && href.includes('.css') && !document.querySelector('link[href="' + href + '"]')) {
+                                  link.setAttribute('rel', 'prefetch');
+                                }
+                              });
+                            });
+                            
+                            // Optimize LCP
+                            document.addEventListener('DOMContentLoaded', () => {
+                              const lcpElement = document.querySelector('img[src*="pmac-poster"]');
+                              if (lcpElement) {
+                                lcpElement.setAttribute('loading', 'eager');
+                                lcpElement.setAttribute('fetchpriority', 'high');
+                              }
+                            });
+                          })();
+                        `,
+                      }}
+                    />
                     
                     {/* Performance monitoring */}
                     <script
