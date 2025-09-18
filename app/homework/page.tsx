@@ -23,42 +23,38 @@ export default async function HomeworkPage() {
     )
   }
 
-  // Get user profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  // Get all data in parallel for better performance
+  const [profileResult, submissionsResult, tutorialsResult] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single(),
+    supabase
+      .from('submissions')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('tutorials')
+      .select('*')
+      .order('created_at', { ascending: false })
+  ])
 
-  // Get user's homework submissions with tutorial info
-  const { data: submissions } = await supabase
-    .from('submissions')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+  const { data: profile } = profileResult
+  const { data: submissions } = submissionsResult
+  const { data: tutorials } = tutorialsResult
 
   // Get tutorial details for submissions
   let submissionsWithTutorials: any[] = []
-  if (submissions) {
-    const tutorialIds = [...new Set(submissions.map(s => s.lesson_id))]
-    const { data: tutorialsData } = await supabase
-      .from('tutorials')
-      .select('id, title, description')
-      .in('id', tutorialIds)
-    
-    const tutorialsMap = new Map(tutorialsData?.map(t => [t.id, t]) || [])
+  if (submissions && tutorials) {
+    const tutorialsMap = new Map(tutorials.map(t => [t.id, t]))
     
     submissionsWithTutorials = submissions.map(submission => ({
       ...submission,
       tutorial: tutorialsMap.get(submission.lesson_id)
     }))
   }
-
-  // Get available tutorials for homework submission
-  const { data: tutorials } = await supabase
-    .from('tutorials')
-    .select('*')
-    .order('created_at', { ascending: false })
 
   return (
     <div className="container mx-auto max-w-4xl py-8">
