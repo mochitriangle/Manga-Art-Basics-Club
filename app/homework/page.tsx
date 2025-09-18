@@ -23,32 +23,29 @@ export default async function HomeworkPage() {
     )
   }
 
-  // Get essential data only for initial load
-  const [profileResult, tutorialsResult] = await Promise.all([
-    supabase
-      .from('profiles')
-      .select('id, full_name, role, created_at')
-      .eq('id', user.id)
-      .single(),
-    supabase
-      .from('tutorials')
-      .select('id, title')
-      .order('created_at', { ascending: false })
-      .limit(10) // Limit to recent tutorials only
-  ])
+  // Get minimal data for fast initial load
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('id, full_name, role, created_at')
+    .eq('id', user.id)
+    .single()
 
-  const { data: profile } = profileResult
-  const { data: tutorials } = tutorialsResult
+  // Get tutorials separately to avoid blocking
+  const { data: tutorials } = await supabase
+    .from('tutorials')
+    .select('id, title')
+    .order('created_at', { ascending: false })
+    .limit(5) // Only get 5 most recent tutorials
 
-  // Get submissions separately to avoid blocking initial render
+  // Get submissions with minimal data
   const { data: submissions } = await supabase
     .from('submissions')
     .select('id, lesson_id, file_path, created_at')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
-    .limit(5) // Limit to recent submissions
+    .limit(3) // Only get 3 most recent submissions
 
-  // Simple mapping for submissions
+  // Simple submissions mapping
   let submissionsWithTutorials: any[] = []
   if (submissions && tutorials) {
     const tutorialsMap = new Map(tutorials.map(t => [t.id, t]))

@@ -48,9 +48,15 @@ export default function RootLayout({
                         __html: `
                   // Global error handling and performance optimization
                   (function() {
-                    // Handle unhandled promise rejections
+                    // Handle unhandled promise rejections with detailed logging
                     window.addEventListener('unhandledrejection', function(event) {
                       console.error('Unhandled promise rejection:', event.reason);
+                      console.error('Promise rejection stack:', event.reason?.stack);
+                      console.error('Event details:', {
+                        reason: event.reason,
+                        promise: event.promise,
+                        type: event.type
+                      });
                       // Prevent the default browser behavior
                       event.preventDefault();
                     });

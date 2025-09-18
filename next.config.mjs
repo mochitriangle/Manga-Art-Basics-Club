@@ -33,34 +33,39 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
-  // Simplified webpack configuration to prevent errors
+  // Minimal webpack configuration to prevent errors
   webpack: (config, { dev, isServer }) => {
-    // Only apply optimizations in production for client-side
+    // Disable all optimizations that might cause issues
     if (!dev && !isServer) {
-      // Simplified split chunks to prevent module loading issues
+      // Use default chunk splitting only
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            priority: -10,
-            chunks: 'all',
-          },
+          default: false,
+          vendors: false,
         },
       };
+      
+      // Disable minification temporarily to isolate the issue
+      config.optimization.minimize = false;
     }
     
     // Reduce bundle size warnings
     config.performance = {
       hints: false,
-      maxEntrypointSize: 512000,
-      maxAssetSize: 512000,
+      maxEntrypointSize: 1024000,
+      maxAssetSize: 1024000,
+    };
+    
+    // Add error handling for module loading
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        ...config.resolve?.fallback,
+        "fs": false,
+        "path": false,
+        "crypto": false,
+      },
     };
     
     return config;

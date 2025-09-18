@@ -50,7 +50,7 @@ export function HomeworkUpload({ tutorials }: HomeworkUploadProps) {
       toast.error('Please select a file')
       return
     }
-
+    
     setUploading(true)
     
     try {
@@ -105,7 +105,22 @@ export function HomeworkUpload({ tutorials }: HomeworkUploadProps) {
       
     } catch (error: any) {
       console.error('Homework submission error:', error)
-      toast.error('Failed to submit homework: ' + (error.message || 'Unknown error'))
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+        cause: error.cause
+      })
+      
+      // More specific error messages
+      let errorMessage = 'Unknown error'
+      if (error.message) {
+        errorMessage = error.message
+      } else if (error.toString) {
+        errorMessage = error.toString()
+      }
+      
+      toast.error('Failed to submit homework: ' + errorMessage)
     } finally {
       setUploading(false)
     }
