@@ -29,49 +29,32 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
-  // Enable experimental features for better performance
+  // Simplified experimental features to prevent errors
   experimental: {
-    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+    optimizePackageImports: ['lucide-react'],
   },
-  // Enable webpack optimizations
+  // Simplified webpack configuration to prevent errors
   webpack: (config, { dev, isServer }) => {
+    // Only apply optimizations in production for client-side
     if (!dev && !isServer) {
-      // Enable tree shaking and minification
-      config.optimization.minimize = true;
+      // Simplified split chunks to prevent module loading issues
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
+            priority: -10,
             chunks: 'all',
-            priority: 10,
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            priority: 5,
           },
         },
       };
-      
-      // Tree shaking optimizations
-      config.optimization.usedExports = true;
-      config.optimization.sideEffects = false;
     }
-    
-    // Performance optimizations
-    config.optimization.moduleIds = 'deterministic';
-    config.optimization.chunkIds = 'deterministic';
     
     // Reduce bundle size warnings
     config.performance = {
@@ -79,12 +62,6 @@ const nextConfig = {
       maxEntrypointSize: 512000,
       maxAssetSize: 512000,
     };
-    
-    // Bundle analyzer (uncomment for analysis)
-    // if (process.env.ANALYZE === 'true') {
-    //   const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-    //   config.plugins.push(new BundleAnalyzerPlugin());
-    // }
     
     return config;
   },
