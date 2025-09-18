@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PerformanceMonitor } from "@/components/performance-monitor"
 import { CriticalCSS } from "@/components/critical-css"
+import { RouteOptimizer } from "@/components/route-optimizer"
 import "@/styles/globals.css"
 
 export const metadata: Metadata = {
@@ -180,6 +181,7 @@ export default function RootLayout({
           </div>
         </ThemeProvider>
         <PerformanceMonitor />
+        <RouteOptimizer />
       </body>
     </html>
   )

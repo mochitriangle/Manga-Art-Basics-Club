@@ -131,7 +131,20 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, stale-while-revalidate=86400',
+            value: 'public, max-age=7200, stale-while-revalidate=86400',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+        ],
+      },
+      {
+        source: '/homework',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=1800, stale-while-revalidate=3600',
           },
         ],
       },
