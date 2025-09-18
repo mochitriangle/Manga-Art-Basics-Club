@@ -13,9 +13,51 @@ export function CriticalCSS() {
             background-color: #fff;
           }
           
-          /* Prevent layout shifts */
+          /* Aggressive CLS prevention */
           * {
             box-sizing: border-box;
+          }
+          
+          /* Prevent all layout shifts */
+          html, body {
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+          }
+          
+          /* Reserve space for all dynamic content */
+          [data-dynamic], .dynamic-content {
+            min-height: 200px;
+            width: 100%;
+            display: block;
+          }
+          
+          /* Prevent font loading shifts */
+          @font-face {
+            font-display: swap;
+          }
+          
+          /* Aggressive image stability */
+          img, picture, video, canvas, svg {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: attr(width) / attr(height);
+          }
+          
+          /* Force stable dimensions for all containers */
+          .container, .max-w-4xl, .max-w-6xl {
+            width: 100%;
+            min-height: 100px;
+          }
+          
+          /* Stable grid and flex layouts */
+          .grid, .flex {
+            min-height: 100px;
+          }
+          
+          /* Prevent text reflow */
+          h1, h2, h3, h4, h5, h6, p, span, div {
+            contain: layout style;
           }
           
           /* Layout stability - reserve space for dynamic content */

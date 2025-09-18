@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { PerformanceMonitor } from "@/components/performance-monitor"
 import { CriticalCSS } from "@/components/critical-css"
 import { RouteOptimizer } from "@/components/route-optimizer"
+import { CLSPreventer } from "@/components/cls-preventer"
 import "@/styles/globals.css"
 
 export const metadata: Metadata = {
@@ -102,11 +103,45 @@ export default function RootLayout({
                                 }
                               });
                               
-                              // Prevent layout shifts
-                              const dynamicElements = document.querySelectorAll('[data-dynamic], .skeleton');
-                              dynamicElements.forEach(el => {
-                                el.style.minHeight = el.offsetHeight + 'px';
-                              });
+                    // Aggressive CLS prevention
+                    const preventLayoutShifts = () => {
+                      // Set stable dimensions for all dynamic elements
+                      const dynamicElements = document.querySelectorAll('[data-dynamic], .skeleton, .dynamic-content');
+                      dynamicElements.forEach(el => {
+                        if (el.offsetHeight > 0) {
+                          el.style.minHeight = el.offsetHeight + 'px';
+                        } else {
+                          el.style.minHeight = '200px';
+                        }
+                      });
+
+                      // Prevent font loading shifts
+                      const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
+                      textElements.forEach(el => {
+                        el.style.contain = 'layout style';
+                      });
+
+                      // Force stable image dimensions
+                      const images = document.querySelectorAll('img');
+                      images.forEach(img => {
+                        if (img.naturalWidth && img.naturalHeight) {
+                          const aspectRatio = img.naturalWidth / img.naturalHeight;
+                          img.style.aspectRatio = aspectRatio.toString();
+                          img.style.minHeight = '100px';
+                        }
+                      });
+
+                      // Stabilize containers
+                      const containers = document.querySelectorAll('.container, .max-w-4xl, .max-w-6xl');
+                      containers.forEach(container => {
+                        container.style.minHeight = Math.max(container.offsetHeight, 100) + 'px';
+                      });
+                    };
+
+                    // Run immediately and on load
+                    preventLayoutShifts();
+                    window.addEventListener('load', preventLayoutShifts);
+                    window.addEventListener('resize', preventLayoutShifts);
                             });
                             
                             // Monitor and log performance improvements
@@ -182,6 +217,7 @@ export default function RootLayout({
         </ThemeProvider>
         <PerformanceMonitor />
         <RouteOptimizer />
+        <CLSPreventer />
       </body>
     </html>
   )
