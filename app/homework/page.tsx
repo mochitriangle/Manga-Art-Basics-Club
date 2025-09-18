@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { HomeworkUpload } from '@/components/homework-upload'
+import { Suspense } from 'react'
 
 export default async function HomeworkPage() {
   const supabase = await createSupabaseServer()

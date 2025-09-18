@@ -118,8 +118,10 @@ export default function RootLayout({
                                   if (entry.entryType === 'layout-shift') {
                                     if (entry.value < 0.1) {
                                       console.log('✅ CLS Good:', entry.value);
+                                    } else if (entry.value < 0.25) {
+                                      console.warn('⚠️ CLS Needs Improvement:', entry.value);
                                     } else {
-                                      console.warn('⚠️ CLS Issue:', entry.value);
+                                      console.error('❌ CLS Critical:', entry.value);
                                     }
                                   }
                                 }

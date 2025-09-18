@@ -58,6 +58,75 @@ export function CriticalCSS() {
             overflow: hidden;
           }
           
+          /* Prevent layout shifts from dynamic content */
+          .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+          }
+          
+          .max-w-4xl {
+            max-width: 56rem;
+          }
+          
+          .py-8 {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+          }
+          
+          .py-16 {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+          }
+          
+          /* Reserve space for dynamic elements */
+          .space-y-6 > * + * {
+            margin-top: 1.5rem;
+          }
+          
+          .space-y-4 > * + * {
+            margin-top: 1rem;
+          }
+          
+          /* Prevent text layout shifts */
+          h1, h2, h3, h4, h5, h6 {
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+          }
+          
+          p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+          }
+          
+          /* Stable button sizes */
+          .btn {
+            min-height: 44px;
+            min-width: 120px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s;
+          }
+          
+          /* Stable form elements */
+          input, textarea, select {
+            min-height: 44px;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            line-height: 1.5;
+          }
+          
+          textarea {
+            min-height: 120px;
+            resize: vertical;
+          }
+          
           /* Aspect ratio containers */
           .aspect-video {
             aspect-ratio: 16 / 9;
