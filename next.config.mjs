@@ -29,43 +29,15 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
-  // Simplified experimental features to prevent errors
-  experimental: {
-    optimizePackageImports: ['lucide-react'],
-  },
-  // Minimal webpack configuration to prevent errors
+  // Disable all experimental features for stability
+  // experimental: {
+  //   optimizePackageImports: ['lucide-react'],
+  // },
+  // Emergency: Restore default webpack behavior
   webpack: (config, { dev, isServer }) => {
-    // Disable all optimizations that might cause issues
-    if (!dev && !isServer) {
-      // Use default chunk splitting only
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: false,
-          vendors: false,
-        },
-      };
-      
-      // Disable minification temporarily to isolate the issue
-      config.optimization.minimize = false;
-    }
-    
-    // Reduce bundle size warnings
+    // Only minimal changes to prevent breaking builds
     config.performance = {
       hints: false,
-      maxEntrypointSize: 1024000,
-      maxAssetSize: 1024000,
-    };
-    
-    // Add error handling for module loading
-    config.resolve = {
-      ...config.resolve,
-      fallback: {
-        ...config.resolve?.fallback,
-        "fs": false,
-        "path": false,
-        "crypto": false,
-      },
     };
     
     return config;
