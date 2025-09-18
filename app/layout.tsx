@@ -8,6 +8,7 @@ import { PerformanceMonitor } from "@/components/performance-monitor"
 import { CriticalCSS } from "@/components/critical-css"
 import { RouteOptimizer } from "@/components/route-optimizer"
 import { CLSPreventer } from "@/components/cls-preventer"
+import { ErrorBoundary } from "@/components/error-boundary"
 import "@/styles/globals.css"
 
 export const metadata: Metadata = {
@@ -45,8 +46,19 @@ export default function RootLayout({
                     <script
                       dangerouslySetInnerHTML={{
                         __html: `
-                          // Comprehensive performance optimization
-                          (function() {
+                  // Global error handling and performance optimization
+                  (function() {
+                    // Handle unhandled promise rejections
+                    window.addEventListener('unhandledrejection', function(event) {
+                      console.error('Unhandled promise rejection:', event.reason);
+                      // Prevent the default browser behavior
+                      event.preventDefault();
+                    });
+
+                    // Handle global errors
+                    window.addEventListener('error', function(event) {
+                      console.error('Global error:', event.error);
+                    });
                             // Aggressively fix preload warnings
                             const fixPreloads = () => {
                               const preloadLinks = document.querySelectorAll('link[rel="preload"]');
@@ -210,10 +222,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-background">
-            <Navbar />
-            <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-          </div>
+          <ErrorBoundary>
+            <div className="min-h-screen bg-background">
+              <Navbar />
+              <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+            </div>
+          </ErrorBoundary>
         </ThemeProvider>
         <PerformanceMonitor />
         <RouteOptimizer />
